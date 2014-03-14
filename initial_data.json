@@ -1,0 +1,37 @@
+[
+    {"pk": 1, "model": "main.points", "fields": {"instruction_text": "Руководсства РД, Минздрав РД, Управление ЧС и ГО по РД, МВД РД, Роспотребнадзор РД, Санитарно-противоэпидимическая комиссия РД", "name": "Хасавюрт", "instruction_title": "Экстренное донесение:", "state": "green", "y": 318, "x": 214}},
+    {"pk": 2, "model": "main.points", "fields": {"instruction_text": "Руководсства РД, Минздрав РД, Управление ЧС и ГО по РД, МВД РД, Роспотребнадзор РД, Санитарно-противоэпидимическая комиссия РД", "name": "Буйнакск", "instruction_title": "Экстренное донесение:", "state": "green", "y": 385, "x": 280}},
+    {"pk": 3, "model": "main.points", "fields": {"instruction_text": "Руководсства РД, Минздрав РД, Управление ЧС и ГО по РД, МВД РД, Роспотребнадзор РД, Санитарно-противоэпидимическая комиссия РД", "name": "Махачкала", "instruction_title": "Экстренное донесение:", "state": "green", "y": 360, "x": 325}},
+    {"pk": 4, "model": "main.points", "fields": {"instruction_text": "Руководсства РД, Минздрав РД, Управление ЧС и ГО по РД, МВД РД, Роспотребнадзор РД, Санитарно-противоэпидимическая комиссия РД", "name": "Каспийск", "instruction_title": "Экстренное донесение:", "state": "green", "y": 376, "x": 340}},
+    {"pk": 5, "model": "main.points", "fields": {"instruction_text": "Руководсства РД, Минздрав РД, Управление ЧС и ГО по РД, МВД РД, Роспотребнадзор РД, Санитарно-противоэпидимическая комиссия РД", "name": "Дербент", "instruction_title": "Экстренное донесение:", "state": "green", "y": 505, "x": 424}},
+
+    {"pk": 1, "model": "main.info", "fields": {"point": 1, "state": "green", "level": "1", "ext1": null, "title": "Опасные инфекционные и паразитарные заболевания I-IV групп патогенности"}},
+    {"pk": 2, "model": "main.info", "fields": {"point": 1, "state": "green", "level": "1", "ext1": null, "title": "Признаки химического террористического акта"}},
+    {"pk": 3, "model": "main.info", "fields": {"point": 1, "state": "green", "level": "1", "ext1": null, "title": "Признаки биологического террористического акта"}},
+    {"pk": 4, "model": "main.info", "fields": {"point": 1, "state": "green", "level": "1", "ext1": null, "title": "Аварийно химические опасные вещества"}},
+    {"pk": 5, "model": "main.info", "fields": {"point": 1, "state": "green", "level": "1", "ext1": null, "title": "Отравляющие химические вещества"}},
+
+    {"pk": 5, "model": "main.info", "fields": {"point": 2, "state": "green", "level": "1", "ext1": null, "title": "Опасные инфекционные и паразитарные заболевания I-IV групп патогенности"}},
+    {"pk": 6, "model": "main.info", "fields": {"point": 2, "state": "green", "level": "1", "ext1": null, "title": "Признаки химического террористического акта"}},
+    {"pk": 7, "model": "main.info", "fields": {"point": 2, "state": "green", "level": "1", "ext1": null, "title": "Признаки биологического террористического акта"}},
+    {"pk": 8, "model": "main.info", "fields": {"point": 2, "state": "green", "level": "1", "ext1": null, "title": "Аварийно химические опасные вещества"}},
+    {"pk": 9, "model": "main.info", "fields": {"point": 2, "state": "green", "level": "1", "ext1": null, "title": "Отравляющие химические вещества"}},
+
+    {"pk": 10, "model": "main.info", "fields": {"point": 3, "state": "green", "level": "1", "ext1": null, "title": "Опасные инфекционные и паразитарные заболевания I-IV групп патогенности"}},
+    {"pk": 11, "model": "main.info", "fields": {"point": 3, "state": "green", "level": "1", "ext1": null, "title": "Признаки химического террористического акта"}},
+    {"pk": 12, "model": "main.info", "fields": {"point": 3, "state": "green", "level": "1", "ext1": null, "title": "Признаки биологического террористического акта"}},
+    {"pk": 13, "model": "main.info", "fields": {"point": 3, "state": "green", "level": "1", "ext1": null, "title": "Аварийно химические опасные вещества"}},
+    {"pk": 14, "model": "main.info", "fields": {"point": 3, "state": "green", "level": "1", "ext1": null, "title": "Отравляющие химические вещества"}},
+
+    {"pk": 15, "model": "main.info", "fields": {"point": 4, "state": "green", "level": "1", "ext1": null, "title": "Опасные инфекционные и паразитарные заболевания I-IV групп патогенности"}},
+    {"pk": 16, "model": "main.info", "fields": {"point": 4, "state": "green", "level": "1", "ext1": null, "title": "Признаки химического террористического акта"}},
+    {"pk": 17, "model": "main.info", "fields": {"point": 4, "state": "green", "level": "1", "ext1": null, "title": "Признаки биологического террористического акта"}},
+    {"pk": 18, "model": "main.info", "fields": {"point": 4, "state": "green", "level": "1", "ext1": null, "title": "Аварийно химические опасные вещества"}},
+    {"pk": 19, "model": "main.info", "fields": {"point": 4, "state": "green", "level": "1", "ext1": null, "title": "Отравляющие химические вещества"}},
+
+    {"pk": 20, "model": "main.info", "fields": {"point": 5, "state": "green", "level": "1", "ext1": null, "title": "Опасные инфекционные и паразитарные заболевания I-IV групп патогенности"}},
+    {"pk": 21, "model": "main.info", "fields": {"point": 5, "state": "green", "level": "1", "ext1": null, "title": "Признаки химического террористического акта"}},
+    {"pk": 22, "model": "main.info", "fields": {"point": 5, "state": "green", "level": "1", "ext1": null, "title": "Признаки биологического террористического акта"}},
+    {"pk": 23, "model": "main.info", "fields": {"point": 5, "state": "green", "level": "1", "ext1": null, "title": "Аварийно химические опасные вещества"}},
+    {"pk": 24, "model": "main.info", "fields": {"point": 5, "state": "green", "level": "1", "ext1": null, "title": "Отравляющие химические вещества"}}
+]
