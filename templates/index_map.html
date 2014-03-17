@@ -1,0 +1,124 @@
+{% load static from staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style type="text/css">
+        html {
+            height: 100%
+        }
+
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0
+        }
+
+        #map_canvas {
+            height: 100%
+        }
+    </style>
+    <script type="text/javascript"
+            src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCdFYF6dSltmdfip7e7Fyfo2QdMOWlKe08&sensor=true&language=ru">
+    </script>
+    <script type="text/javascript">
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(43.357138, 47.063713),
+                zoom: 8,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"),
+                    mapOptions);
+
+            var image = '{% static "img/BIO1.png" %}';
+            var myLatLng = new google.maps.LatLng(43.357138, 47.063713);
+            var contentString1 = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    'Радиоактивное заражение' +
+                    '</div>';
+
+            var infowindow1 = new google.maps.InfoWindow({
+                content: contentString1
+            });
+
+            var beachMarker = new google.maps.Marker({
+                title: "Радиоактивное заражение",
+                position: myLatLng,
+                map: map,
+                icon: '{% static "img/BIO1.png" %}'
+            });
+
+            google.maps.event.addListener(beachMarker, 'click', function () {
+                infowindow3.close();
+                infowindow2.close();
+                infowindow1.open(map, beachMarker);
+            });
+
+            var contentString2 = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    'Химическое заражение' +
+                    '</div>';
+
+            var infowindow2 = new google.maps.InfoWindow({
+                content: contentString2
+            });
+
+
+            var beachMarker2 = new google.maps.Marker({
+                title: "Химическое заражение",
+                position: new google.maps.LatLng(43.40, 47.15),
+                map: map,
+                icon: '{% static "img/BIO2.png" %}'
+            });
+
+            google.maps.event.addListener(beachMarker2, 'click', function () {
+                infowindow1.close();
+                infowindow3.close();
+                infowindow2.open(map, beachMarker2);
+            });
+
+
+            var contentString3 = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    'Опастность отравления' +
+                    '</div>';
+
+            var infowindow3 = new google.maps.InfoWindow({
+                content: contentString3
+            });
+
+
+            var beachMarker3 = new google.maps.Marker({
+                title: "Опастность отравления",
+                position: new google.maps.LatLng(43.5, 47.25),
+                map: map,
+                icon: '{% static "img/BIO3.png" %}'
+            });
+
+            google.maps.event.addListener(beachMarker3, 'click', function () {
+                infowindow1.close();
+                infowindow2.close();
+                infowindow3.open(map, beachMarker3);
+            });
+
+
+            var imageBounds = new google.maps.LatLngBounds(
+                    new google.maps.LatLng(44.988113, 44.88842),
+                    new google.maps.LatLng(41.19519, 49.215317));
+
+            var historicalOverlay = new google.maps.GroundOverlay(
+                    {% static "img/map.png" %},
+                    imageBounds);
+            historicalOverlay.setMap(map);
+
+        }
+    </script>
+</head>
+<body onload="initialize()">
+<div id="map_canvas" style="width:100%; height:100%"></div>
+</body>
+</html>

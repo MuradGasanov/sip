@@ -7,7 +7,7 @@ import json
 
 
 def index(r):
-    return render_to_response("index.html")
+    return render_to_response("index_map.html")
 
 
 def admin(r):
