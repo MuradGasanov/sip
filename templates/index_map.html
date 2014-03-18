@@ -3,6 +3,8 @@
 <html>
 <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <script src="{% static "js/jquery.min.js" %}"></script>
+    <script src="{% static "kendo/js/kendo.web.min.js" %}"></script>
     <style type="text/css">
         html {
             height: 100%
@@ -10,6 +12,7 @@
 
         body {
             height: 100%;
+            overflow: hidden;
             margin: 0;
             padding: 0
         }
@@ -17,108 +20,172 @@
         #map_canvas {
             height: 100%
         }
+
+        #info {
+            color: #ffffff;
+            background: rgba(29, 29, 29, 0.5);
+            position: absolute;
+            top: 120px;
+            right: -500px;
+            border-radius: 5px;
+            box-shadow: 1px 1px 15px #4E4E4E;
+            transition: all 0.5s;
+            padding: 15px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .label {
+            display: inline-block;
+            min-width: 180px;
+        }
+        .field {
+           font-weight: bold;
+        }
     </style>
     <script type="text/javascript"
             src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCdFYF6dSltmdfip7e7Fyfo2QdMOWlKe08&sensor=true&language=ru">
     </script>
     <script type="text/javascript">
         function initialize() {
+
             var mapOptions = {
                 center: new google.maps.LatLng(43.357138, 47.063713),
                 zoom: 8,
+                minZoom: 7, // Minimum zoom level allowed (0-20)
+			    maxZoom: 10,
+                streetViewControl:false,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                     mapOptions);
 
-            var image = '{% static "img/BIO1.png" %}';
-            var myLatLng = new google.maps.LatLng(43.357138, 47.063713);
-            var contentString1 = '<div id="content">' +
-                    '<div id="siteNotice">' +
-                    '</div>' +
-                    'Радиоактивное заражение' +
-                    '</div>';
+            var types = {
+                bio1: '/static/img/BIO1.png', // radioactive
+                bio2: '/static/img/BIO2.png', // bio hazard
+                bio3: '/static/img/BIO3.png'  // skull
+            };
 
-            var infowindow1 = new google.maps.InfoWindow({
-                content: contentString1
-            });
+            var points = [
+                {
+                    position: new google.maps.LatLng(43.5, 47.25),
+                    title: "Радиоактивное Опасность",
+                    text: "",
+                    type: types.bio1
+                },
+                {
+                    position: new google.maps.LatLng(43.357138, 47.063713),
+                    title: "Опасность Биологического заражения",
+                    text: "",
+                    type: types.bio2
+                }
+            ];
 
-            var beachMarker = new google.maps.Marker({
-                title: "Радиоактивное заражение",
-                position: myLatLng,
-                map: map,
-                icon: '{% static "img/BIO1.png" %}'
-            });
+            var map_points = [];
 
-            google.maps.event.addListener(beachMarker, 'click', function () {
-                infowindow3.close();
-                infowindow2.close();
-                infowindow1.open(map, beachMarker);
-            });
+            function clear_markers() {
+                for (var i = 0; i < map_points.length; i++) {
+                    map_points[i].setMap(null);
+                }
+                map_points.length = 0;
+            }
 
-            var contentString2 = '<div id="content">' +
-                    '<div id="siteNotice">' +
-                    '</div>' +
-                    'Химическое заражение' +
-                    '</div>';
+            var infowindow;
+            var infoTemplate = kendo.template($("#infoTemplate").html());
 
-            var infowindow2 = new google.maps.InfoWindow({
-                content: contentString2
-            });
+            function set_markers() {
+                clear_markers();
+var r = [
+                {
+                    position: new google.maps.LatLng(43.5, 47.25),
+                    x: 43.5,
+                    y: 47.25,
+                    title: "Радиоактивное Опасность",
+                    text: "",
+                    type: types.bio1,
+                    info: {
+                        name: "1",
+                        type: "1",
+                        source: "1",
+                        count: 1
+                    }
+                },
+                {
+                    position: new google.maps.LatLng(43.357138, 47.063713),
+                    x: 43.357138,
+                    y: 47.063713,
+                    title: "Опасность Биологического заражения",
+                    text: "",
+                    type: types.bio2,
+                    info: {
+                        name: "2",
+                        type: "2",
+                        source: "2",
+                        count: 2
+                    }
+                }
+            ]
+{#                $.post("/get_info/", {}, function(r) {#}
+                    for (var i = 0; i < r.length; i++) {
+                        map_points.push(
+                                new google.maps.Marker({
+                                    title: r[i].title,
+                                    position: new google.maps.LatLng(r[i].x, r[i].y), //points[i].position,
+                                    map: map,
+                                    icon: r[i].type,
+                                    custom_info: {
+                                        name: r[i].info.name,
+                                        type: r[i].info.type,
+                                        source: r[i].info.source,
+                                        count: r[i].info.count
+                                    }
+                                })
+                        );
+                        google.maps.event.addListener(map_points[map_points.length-1], 'mouseover', function () {
+                            infowindow = new google.maps.InfoWindow({
+                                content: '<div id="infowindow">' +
+                                        '<div id="infowindowtitle"></div>' +
+                                        '<div id="infowindowcontent">' +
+                                        this.title +
+                                        '</div>' +
+                                        '</div>'
+                            });
+                            infowindow.open(map, this);
+                        });
+                        google.maps.event.addListener(map_points[map_points.length-1], 'mouseout', function () {
+                            infowindow.close();
+                        });
+                        google.maps.event.addListener(map_points[map_points.length-1], 'click', function () {
+                            $("#info").css({right: "-500px"});
+                            $("#info").css({right: "15px"}).html(infoTemplate(this.custom_info));
+                        });
+                    }
+{#                });#}
+            }
 
+            set_markers();
 
-            var beachMarker2 = new google.maps.Marker({
-                title: "Химическое заражение",
-                position: new google.maps.LatLng(43.40, 47.15),
-                map: map,
-                icon: '{% static "img/BIO2.png" %}'
-            });
-
-            google.maps.event.addListener(beachMarker2, 'click', function () {
-                infowindow1.close();
-                infowindow3.close();
-                infowindow2.open(map, beachMarker2);
-            });
-
-
-            var contentString3 = '<div id="content">' +
-                    '<div id="siteNotice">' +
-                    '</div>' +
-                    'Опастность отравления' +
-                    '</div>';
-
-            var infowindow3 = new google.maps.InfoWindow({
-                content: contentString3
-            });
-
-
-            var beachMarker3 = new google.maps.Marker({
-                title: "Опастность отравления",
-                position: new google.maps.LatLng(43.5, 47.25),
-                map: map,
-                icon: '{% static "img/BIO3.png" %}'
-            });
-
-            google.maps.event.addListener(beachMarker3, 'click', function () {
-                infowindow1.close();
-                infowindow2.close();
-                infowindow3.open(map, beachMarker3);
-            });
-
-
-            var imageBounds = new google.maps.LatLngBounds(
-                    new google.maps.LatLng(44.988113, 44.88842),
-                    new google.maps.LatLng(41.19519, 49.215317));
-
-            var historicalOverlay = new google.maps.GroundOverlay(
-                    {% static "img/map.png" %},
-                    imageBounds);
-            historicalOverlay.setMap(map);
-
+            $("#info").click(function(e) {
+                $(this).css({right: "-500px"});
+            })
         }
     </script>
 </head>
 <body onload="initialize()">
+
+<script id="infoTemplate" type="text/x-kendo-template">
+<ul>
+    <li ><span class="label">Населённый пункт:</span> <span class="filed">#=name#</span></li>
+    <li ><span class="label">Тип:</span> <span class="filed">#=type#</span></li>
+    <li ><span class="label">Источник:</span> <span class="filed">#=source#</span></li>
+    <li ><span class="label">Количестов зараженных:</span> <span class="filed">#=count#</span></li>
+</ul>
+</script>
+
 <div id="map_canvas" style="width:100%; height:100%"></div>
+<div id="info" ></div>
 </body>
 </html>
