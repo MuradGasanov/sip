@@ -18,4 +18,6 @@ urlpatterns = patterns('main.views',
                        url(r"^"+ADMIN_URL+"info/create/$", Info.create),
                        url(r"^"+ADMIN_URL+"info/update/$", Info.update),
                        url(r"^"+ADMIN_URL+"info/destroy/$", Info.destroy),
+
+                       url(r"^"+ADMIN_URL+"point/read/$", Point.read),
 )

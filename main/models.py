@@ -16,3 +16,11 @@ class Info(models.Model):
     level = models.CharField(max_length=15)
     ext1 = models.CharField(max_length=30, null=True)
     point = models.ForeignKey("Points", null=True)
+
+
+class Point(models.Model):
+    lt = models.FloatField()
+    ln = models.FloatField()
+    name = models.CharField(max_length=150)
+    type = models.CharField(max_length=150)
+    info = models.CharField(max_length=666)

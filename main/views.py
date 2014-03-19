@@ -11,7 +11,7 @@ def index(r):
 
 
 def admin(r):
-    return render_to_response("admin.html")
+    return render_to_response("admin_map.html")
 
 
 class Points():
@@ -226,3 +226,17 @@ class Info():
         info.delete()
         Points.state_update(point_id)
         return HttpResponse(json.dumps({}), content_type="application/json")
+
+
+class Point:
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def read(r):
+        items = list(models.Point.objects.all()
+                     .values("id", "lt", "ln", "name", "info", "type"))
+        if items:
+            return HttpResponse(json.dumps(items), content_type="application/json")
+        else:
+            return HttpResponse("", content_type="application/json")

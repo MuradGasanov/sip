@@ -38,12 +38,14 @@
             padding: 0;
             margin: 0;
         }
+
         .label {
             display: inline-block;
             min-width: 180px;
         }
+
         .field {
-           font-weight: bold;
+            font-weight: bold;
         }
     </style>
     <script type="text/javascript"
@@ -56,33 +58,12 @@
                 center: new google.maps.LatLng(43.357138, 47.063713),
                 zoom: 8,
                 minZoom: 7, // Minimum zoom level allowed (0-20)
-			    maxZoom: 10,
-                streetViewControl:false,
+                maxZoom: 10,
+                streetViewControl: false,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             var map = new google.maps.Map(document.getElementById("map_canvas"),
                     mapOptions);
-
-            var types = {
-                bio1: '/static/img/BIO1.png', // radioactive
-                bio2: '/static/img/BIO2.png', // bio hazard
-                bio3: '/static/img/BIO3.png'  // skull
-            };
-
-            var points = [
-                {
-                    position: new google.maps.LatLng(43.5, 47.25),
-                    title: "Радиоактивное Опасность",
-                    text: "",
-                    type: types.bio1
-                },
-                {
-                    position: new google.maps.LatLng(43.357138, 47.063713),
-                    title: "Опасность Биологического заражения",
-                    text: "",
-                    type: types.bio2
-                }
-            ];
 
             var map_points = [];
 
@@ -96,54 +77,37 @@
             var infowindow;
             var infoTemplate = kendo.template($("#infoTemplate").html());
 
-            function set_markers() {
-                clear_markers();
-var r = [
-                {
-                    position: new google.maps.LatLng(43.5, 47.25),
-                    x: 43.5,
-                    y: 47.25,
-                    title: "Радиоактивное Опасность",
-                    text: "",
-                    type: types.bio1,
-                    info: {
-                        name: "1",
-                        type: "1",
-                        source: "1",
-                        count: 1
-                    }
-                },
-                {
-                    position: new google.maps.LatLng(43.357138, 47.063713),
-                    x: 43.357138,
-                    y: 47.063713,
-                    title: "Опасность Биологического заражения",
-                    text: "",
-                    type: types.bio2,
-                    info: {
-                        name: "2",
-                        type: "2",
-                        source: "2",
-                        count: 2
+            function compare(x, y) {
+                for (var f in x) {
+                    if (x.hasOwnProperty(f) && y.hasOwnProperty(f)) {
+                        if (x[f] === y[f]) {
+                            continue;
+                        } else {
+                            return false
+                        }
                     }
                 }
-            ]
-{#                $.post("/get_info/", {}, function(r) {#}
+                return true;
+            }
+
+            var last = 0;
+
+            function set_markers() {
+
+                var new_points = {};
+
+                $.post("/admin/point/read/", {}, function (r) {
+                    clear_markers();
                     for (var i = 0; i < r.length; i++) {
-                        map_points.push(
-                                new google.maps.Marker({
-                                    title: r[i].title,
-                                    position: new google.maps.LatLng(r[i].x, r[i].y), //points[i].position,
-                                    map: map,
-                                    icon: r[i].type,
-                                    custom_info: {
-                                        name: r[i].info.name,
-                                        type: r[i].info.type,
-                                        source: r[i].info.source,
-                                        count: r[i].info.count
-                                    }
-                                })
-                        );
+
+                        map_points.push(new google.maps.Marker({
+                            id: r[i].id,
+                            title: r[i].name,
+                            position: new google.maps.LatLng(r[i].lt, r[i].ln),
+                            map: map,
+                            icon: r[i].type,
+                            custom_info: r[i].info
+                        }))
                         google.maps.event.addListener(map_points[map_points.length-1], 'mouseover', function () {
                             infowindow = new google.maps.InfoWindow({
                                 content: '<div id="infowindow">' +
@@ -159,16 +123,26 @@ var r = [
                             infowindow.close();
                         });
                         google.maps.event.addListener(map_points[map_points.length-1], 'click', function () {
-                            $("#info").css({right: "-500px"});
-                            $("#info").css({right: "15px"}).html(infoTemplate(this.custom_info));
+                            last = this.id;
+                            if ($("#info").css("right") == "15px") {
+                                $("#info").css({right: "-500px"});
+                            }
+                            $("#info").html(infoTemplate(this)).css({right: "15px"});
+
                         });
+{#                        if (r[i].id == last) {#}
+{##}
+{##}
+{#                             $("#info").html(r[i]);#}
+{#                        }#}
                     }
-{#                });#}
+{#                    setTimeout(set_markers, 2000);#}
+                });
             }
 
             set_markers();
 
-            $("#info").click(function(e) {
+            $("#info").click(function (e) {
                 $(this).css({right: "-500px"});
             })
         }
@@ -178,14 +152,18 @@ var r = [
 
 <script id="infoTemplate" type="text/x-kendo-template">
 <ul>
-    <li ><span class="label">Населённый пункт:</span> <span class="filed">#=name#</span></li>
-    <li ><span class="label">Тип:</span> <span class="filed">#=type#</span></li>
-    <li ><span class="label">Источник:</span> <span class="filed">#=source#</span></li>
-    <li ><span class="label">Количестов зараженных:</span> <span class="filed">#=count#</span></li>
+    <li ><span class="label">Населенный пункт</span><span class="filed">#= data.title#</span></li >
+    #console.log(data);var s = data.custom_info.split(","); for (var i=0; i<s.length; i++) { #
+    <li >
+         #var f=s[i].substr(0,s[i].indexOf(":")), v=s[i].substr(s[i].indexOf(":")+1,s[i].length-1);#
+         <span class="label">#= f #</span>
+         <span class="filed">#= v #</span>
+    </li>
+    # } #
 </ul>
 </script>
 
 <div id="map_canvas" style="width:100%; height:100%"></div>
-<div id="info" ></div>
+<div id="info"></div>
 </body>
 </html>
